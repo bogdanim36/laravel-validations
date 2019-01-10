@@ -1,8 +1,9 @@
 # laravel-validations
 Php Laravel + AngularJS Validation
 
-1. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/BaseModel.php' target='_blank'>BaseModel</a>
-2. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/Controller.php' target='_blank'>Controller.php</a>
+1. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/BaseModel.php' target='_blank'>BaseModel</a>
+2. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/Controller.php' target='_blank'>Controller.php</a>
+3. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator.service.js' target='_blank'>validator.service.js</a>
 
 <br>in Model.php se pun regulile de validare:
 (!!! se vor sterge validarile pt. campurile ce se compelteaza in metodele update  or insert din repository ca: tenanant_id, create, update, etc)
