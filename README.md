@@ -88,20 +88,20 @@ for validation of children (in ngrepaet must have same name as property of model
     
 In save callback method from angular must have:
 
-			if (response.status) {
-				if (this.saveCallback) this.saveCallback(response);
-				else window.location = "/" + this.entity + "/" + params.data[this.primaryKey];
-			} else {
-				$injector("validator").markErrors(response.error, this.element);
-				let messages = {};
-				Object.keys(response.error).forEach(field => {
-					let errors = response.error[field];
-					if (angular.isString(errors[0])) messages[field] = errors;
-					else messages[field] = [trans('LANG.' + field + 'S_INVALID')];
-				});
-				this.errors = messages;
-				console.warn(this.errors);
-			}
+	if (response.status) {
+		if (this.saveCallback) this.saveCallback(response);
+		else window.location = "/" + this.entity + "/" + params.data[this.primaryKey];
+	} else {
+		$injector("validator").markErrors(response.error, this.element);
+		let messages = {};
+		Object.keys(response.error).forEach(field => {
+			let errors = response.error[field];
+			if (angular.isString(errors[0])) messages[field] = errors;
+			else messages[field] = [trans('LANG.' + field + 'S_INVALID')];
+		});
+		this.errors = messages;
+		console.warn(this.errors);
+	}
 
 For reports.
  
