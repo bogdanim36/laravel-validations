@@ -3,8 +3,8 @@
 01. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/BaseModel.php' target='_blank'>BaseModel</a>
 02. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/Controller.php' target='_blank'>Controller.php</a>
 03. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator.service.js' target='_blank'>validator.service.js</a>
-04. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-erros.component.html' target='_blank'>validator-error.html</a>, and change css classes as you need. Your view controller must be names with alias vm (ng-controller = 'SampleCtrl as vm'.
-05. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-erros.component.js' target='_blank'>validator-error.js</a>
+04. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.html' target='_blank'>validator-errors.html</a>, and change css classes as you need. Your view controller must be names with alias vm (ng-controller = 'SampleCtrl as vm'.
+05. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.js' target='_blank'>validator-errors.js</a>
 
 <br>in Model.php se pun regulile de validare:
 (!!! se vor sterge validarile pt. campurile ce se completeaza in metodele update  or insert din repository ca: tenanant_id, create, update, etc)
