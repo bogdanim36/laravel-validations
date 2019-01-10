@@ -6,8 +6,7 @@
 04. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.html' target='_blank'>validator-errors.html</a>, and change css classes as you need. Your view controller must be names with alias vm (ng-controller = 'SampleCtrl as vm'.
 05. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.js' target='_blank'>validator-errors.js</a>
 
-<br>in Model.php se pun regulile de validare:
-(!!! se vor sterge validarile pt. campurile ce se completeaza in metodele update  or insert din repository ca: tenanant_id, create, update, etc)
+<br>In Model.php setup validations rules (must delete rules for required field which are compelted in service or repository insert or update):
 
     protected $validations = [
 		"user_id" => array("rules" => "required|integer"),
@@ -15,25 +14,23 @@
 		"type_id" => "required|integer",
 		"date_start" => "required|date",
 		"date_end" => ["rules" => "required|date|after:date_start",
-			"messages" => ["after" => 'END_DATE_MUST_BE_AFTER_START_DATE'],
-			"title" => "DATE_START"],
+			"messages" => ["after" => 'LANG.END_DATE_MUST_BE_AFTER_START_DATE'],
+			"title" => "LANG.DATE_START"],
 		"comment" => "required|max:65535",
 		"created_by" => "integer",
 		"modified_by" => "integer",
 	];
 	
-	//atentie trebuie sa fie public
-	public $relatedModels=["phone", "emails", "address"] // numele claselor ce se vor regasi ca membrii un obiectul model, si in ng-repeat pe copii respectivi
+	public $relatedModels=["phone", "emails", "address"] 
 	
-Unde:
-	- messages contine un array de  cu mesajele custom (necesare daca cele generate automat nu sunt ok)
+Where messages contains an array of custom mesages (if the automatic generated messages are not good enought).
 
-Validari conditionale: In Model se creaza metoda conditionalValidations, si se adauga mesajele pt. reguli in $validations
+Conditional vaalidations: In Model must create method conditionalValidations, and must be added messages for rules in $validations
 
     protected $validations = [
 		"project_id" => ["messages" => ["required" => null]],
-		"practice_id" => ["messages" => ["required" => 'LANG.CUSTOM_MESSAGE'],
-		"commodity_activity_id" => ["messages" => ["required" => null]],
+		"practice_id" => ["messages" => ["required" => 'LANG.CUSTOM_MESSAGE'], //ID for translated custom message
+		"commodity_activity_id" => ["messages" => ["required" => null]], // null for automatic generated message
 		"reference_id" => ["messages" => ["required" => null]]
 
 	];
@@ -76,45 +73,45 @@ In controller.php:
 			200));
 	}
 
-In form blade trebuie pus elementul pt. afisarea mesajelor de la server:
+In form blade must be insterted element for show error messages:
     
     <div class="form-group mb-3 row" id="error_messages">
         <validator-errors ></validator-errors>
     </div>
     
-pt. copii
+for validation of children (in ngrepaet must have same name as property of model)
     
     <div ng-repeat= "entityName in vm.data.entityName" > 
         <input ng-model="entityName.field1>
         <datetime ng-model="entityName.field2>
     </div>
+    
+In save callback method from angular must have:
 
-pt. rapoarte
+			if (response.status) {
+				if (this.saveCallback) this.saveCallback(response);
+				else window.location = "/" + this.entity + "/" + params.data[this.primaryKey];
+			} else {
+				$injector("validator").markErrors(response.error, this.element);
+				let messages = {};
+				Object.keys(response.error).forEach(field => {
+					let errors = response.error[field];
+					if (angular.isString(errors[0])) messages[field] = errors;
+					else messages[field] = [trans('LANG.' + field + 'S_INVALID')];
+				});
+				this.errors = messages;
+				console.warn(this.errors);
+			}
+
+For reports.
  
- <lookup ng-model="vm.filter.user_id" required></lookup>
- <datetimepicker ng-model="vm.filter.date_to" aftre=date_from"></datetimepicker>
- 
- 
-In metoda de raspuns server in client side (este implementat in baseCtrl.save):
+	 <select ng-model="vm.filter.user_id" required></lookup>
+	 <datetimepicker ng-model="vm.filter.date_to" aftre=date_from"></datetimepicker>
 
-        if (response.status) {
-            saveCallback(response);
-            vm.closeDialog();
-        } else {
-            this.validator.markErrors(response.error, this.element);
-            let messages = {};
-            Object.keys(response.error).forEach(field => {
-                let errors = response.error[field];
-                if (angular.isString(errors[0])) messages[field] = errors;
-                else messages[field] = [trans('LANG.' + field + 'S_INVALID')];
-            });
-            this.errors = messages;
-        }
 
-Informatii aditionale:
 
-Mesajele generate automate se creeaza in BaseModel.getStandardValidationError:
-file: app/Models/BaseModel.php
+Automatic generated messages are creeated in BaseModel.getStandardValidationError:
+file: src/BaseModel.php
 
     private function getStandardValidationError($rule, $fieldName)
 	{
@@ -124,92 +121,6 @@ file: app/Models/BaseModel.php
 			case "required":
 				return trans(upper('LANG'.$fieldName)) . trans('LANG.IS_REQUIRED');
 			default:
-				return trans(upper('LANG'.$fieldName)) . ' ' . trans(upper('LANG'.$ruleName)); //trans($fieldName . " must " . $ruleName);
+				return trans(upper('LANG'.$fieldName)) . ' ' . trans(upper('LANG'.$ruleName)); //trans($fieldName . " 	must " . $ruleName);
 		}
-	}
-
-Template-ul html de modificat este:
-	/assets/custom/js/directives/validator-errors/validator-errors.component.html
-
-BaseModel.php contine metodele:
-
-	public function getValidations()
-	{
-		if (!property_exists($this, "validations")) {
-			return [];
-		}
-		$validator = ["rules" => [], "messages" => []];
-		foreach ($this->validations as $key => $validation) {
-			$rules = isset($validation["rules"]) ? $validation["rules"] : $validation;
-			$validator["rules"][$key] = $rules;
-			$rulesList = explode("|", $rules);
-			$messages = isset($validation["messages"]) ? $validation["messages"] : [];
-			foreach ($rulesList as $rule) {
-				$ruleName = explode(':', $rule)[0];
-				$messageKey = $key . "." . $ruleName;
-				if (!isset($messages[$ruleName])) $message = $this->getStandardValidationError($rule, $key);
-				else $message = trans("LANG." . strtoupper($messages[$ruleName]));
-				$validator["messages"][$messageKey] = $message;
-			}
-		}
-		return $validator;
-	}
-
-	public function getRelatedModels()
-	{
-		if (!property_exists($this, "relatedModels") ) {
-			return [];
-		}
-		return $this->relatedModels;
-	}
-
-	private function getStandardValidationError($rule, $fieldName)
-	{
-		$ruleName = explode(":", $rule)[0];
-		$ruleValues = strpos(":", $rule) > -1 ? explode(":", $rule)[1] : null;
-		switch ($ruleName) {
-			case "required":
-				return trans(strtoupper('LANG.' . $fieldName)) . ' ' . trans('LANG.IS_REQUIRED');
-			default:
-				return trans(strtoupper('LANG.' . $fieldName)) . ' ' . trans(strtoupper('LANG.' . $ruleName)); //trans($fieldName . " must " . $ruleName);
-		}
-	}
-
-	public function validate(array $input, $catchResponse = false)
-	{
-		if (!property_exists($this, "validations")) {
-			return $this;
-		}
-
-		$validator = Validator::make($input, $this->validations);
-		if ($validator->fails()) {
-			if ($catchResponse) {
-				return $validator->errors();
-			} else {
-				throw new \Exception($validator->errors(), 1);
-			}
-		}
-
-		return $this;
-	}
-
-
-Controller.php contine:
-
-	public function validate($modelName, $request)
-	{
-		$model = \App::make('\App\Models\\' . $modelName);
-		$validators = $model->getValidations();
-		$input = is_array($request) ? $request : $request->all();
-		$validation = \Validator::make($input, $validators["rules"], $validators["messages"]);
-		$errors = $validation->fails() ? $validation->errors()->messages(): [];
-		foreach ($model->relatedModels as $relatedModelName) {
-			if (!isset($input[$relatedModelName])) continue;
-			foreach ($input[$relatedModelName] as $index => $item) {
-				$result = $this->validate($relatedModelName, $item);
-				if (isset($result["status"])) $errors[$relatedModelName][] = array("index" => $index, "errors" => $result['error']);
-			}
-		}
-		if (count($errors)) return Helper::setValidationErrorResponse($errors);
-		else return true;
 	}
