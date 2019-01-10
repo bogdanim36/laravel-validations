@@ -25,7 +25,7 @@
 	
 Where messages contains an array of custom mesages (if the automatic generated messages are not good enought).
 
-Conditional vaalidations: In Model must create method conditionalValidations, and must be added messages for rules in $validations
+Conditional validations: In Model must create method conditionalValidations, and must be added messages for rules in $validations
 
     protected $validations = [
 		"project_id" => ["messages" => ["required" => null]],
