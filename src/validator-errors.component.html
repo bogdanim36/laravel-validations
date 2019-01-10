@@ -1,0 +1,10 @@
+<div class="col-12">
+	<div ng-if="$parent.vm.errors" class="alert alert-outline-danger fade show" role="alert">
+		<div class="alert-icon"><i class="flaticon-warning"></i></div>
+		<div class="alert-text">
+			<div ng-repeat="(error, messages) in $parent.$parent.vm.errors">
+				<div ng-repeat="msg in messages"><% msg %></div>
+			</div>
+		</div>
+	</div>
+</div>
