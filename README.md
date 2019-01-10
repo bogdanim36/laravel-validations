@@ -1,6 +1,10 @@
 # laravel-validations
 Php Laravel + AngularJS Validation
-in Model.php se pun regulile de validare:
+
+1. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/BaseModel.php' target='_blank'>BaseModel</a>
+2. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/Controller.php' target='_blank'>Controller.php</a>
+
+<br>in Model.php se pun regulile de validare:
 (!!! se vor sterge validarile pt. campurile ce se compelteaza in metodele update  or insert din repository ca: tenanant_id, create, update, etc)
 
     protected $validations = [
