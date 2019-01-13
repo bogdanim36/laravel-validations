@@ -3,10 +3,10 @@
 01. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/BaseModel.php' target='_blank'>BaseModel</a>
 02. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/Controller.php' target='_blank'>Controller.php</a>
 03. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator.service.js' target='_blank'>validator.service.js</a>. Change how to highlight controls with error as you need.
-04. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.html' target='_blank'>validator-errors.html</a>, and change css classes as you need. Your view controller must be names with alias vm (ng-controller = 'SampleCtrl as vm'.
+04. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.html' target='_blank'>validator-errors.html</a>, and change css classes as you need. Your view controller must be named with alias vm (ng-controller = 'SampleCtrl as vm').
 05. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.js' target='_blank'>validator-errors.js</a>
 
-<br>In Model.php setup validations rules (must delete rules for required field which are compelted in service or repository insert or update):
+<br>In Model.php setup validations rules (must delete rules for required field which are completed in service or repository insert or update, like createdAt, createBy):
 
     protected $validations = [
 		"user_id" => array("rules" => "required|integer"),
@@ -73,13 +73,13 @@ In controller.php:
 			200));
 	}
 
-In form blade must be insterted element for show error messages:
+In form blade must be inserted element for show error messages:
     
     <div class="form-group mb-3 row" id="error_messages">
         <validator-errors ></validator-errors>
     </div>
     
-for validation of children (in ngrepaet must have same name as property of model)
+for validation of children (in ng-repeat must have same name as property of model)
     
     <div ng-repeat= "entityName in vm.data.entityName" > 
         <input ng-model="entityName.field1>
@@ -103,10 +103,10 @@ In save callback method from angular must have:
 		console.warn(vm.errors);
 	}
 
-For reports.
+For reports, you can use attributes required and after (other rules not implemented).
  
 	 <select ng-model="vm.filter.user_id" required></lookup>
-	 <datetimepicker ng-model="vm.filter.date_to" aftre=date_from"></datetimepicker>
+	 <datetimepicker ng-model="vm.filter.date_to" after=date_from"></datetimepicker>
 
 
 
