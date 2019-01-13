@@ -1,7 +1,7 @@
 # Complete Php Laravel with AngularJS Validations
 
-01. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/BaseModel.php' target='_blank'>BaseModel</a>
-02. Change <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/Controller.php' target='_blank'>Controller.php</a>
+01. Change your Laravel BaseModel.php as in <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/BaseModel.php' target='_blank'>BaseModel</a>
+02. Change your Laravel Controller.php as in <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/Controller.php' target='_blank'>Controller.php</a>
 03. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator.service.js' target='_blank'>validator.service.js</a>. Change how to highlight controls with error as you need.
 04. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.html' target='_blank'>validator-errors.html</a>, and change css classes as you need. Your view controller must be named with alias vm (ng-controller = 'SampleCtrl as vm').
 05. Add in client side <a href='https://github.com/bogdanim36/laravel-validations/blob/master/src/validator-errors.component.js' target='_blank'>validator-errors.js</a>
