@@ -103,12 +103,6 @@ In save callback method from angular must have:
 		console.warn(vm.errors);
 	}
 
-For reports, you can use attributes required and after (other rules not implemented).
- 
-	 <select ng-model="vm.filter.user_id" required></lookup>
-	 <datetimepicker ng-model="vm.filter.date_to" after=date_from"></datetimepicker>
-
-
 
 Automatic generated messages are creeated in BaseModel.getStandardValidationError:
 file: src/BaseModel.php
