@@ -34,7 +34,7 @@ class BaseModel extends Model
 			// generez mesaje pt. regulile conditionale (care nu sunt definite in $validations ci in conditionalValidations)
 			foreach ($messages as $ruleName => $message) {
 				$messageKey = $key . "." . $ruleName;
-				if (isset($validator["messages"][$messageKey])) continue;
+				if (isset($validator["messages"][$messageKey] )) continue;
 				$message = isset($messages[$ruleName]) ?
 					trans("LANG." . strtoupper($messages[$ruleName])) :
 					$this->getStandardValidationError($ruleName, $key);
@@ -55,7 +55,9 @@ class BaseModel extends Model
 
 	private function getStandardValidationError($rule, $fieldName)
 	{
+		if (!isset($rule) || $rule=="") throw new \Exception("No rule set for field " . $fieldName . " in model " . $this->table);
 		$ruleName = explode(":", $rule)[0];
+		$ruleValues = strpos(":", $rule) > -1 ? explode(":", $rule)[1] : null;
 		switch ($ruleName) {
 			case "required":
 				return trans(strtoupper('LANG.' . $fieldName)) . ' ' . trans('LANG.IS_REQUIRED');
