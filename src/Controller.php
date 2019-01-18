@@ -35,7 +35,12 @@ class Controller extends BaseController
 			}
 			else {
 				$result = $this->validate($relatedModelName, $input[$relatedModelName]);
-				if (isset($result["status"])) $errors[$relatedModelName][] = array("index" => 0, "errors" => $result['error']);
+				if (isset($result["status"])) {
+					foreach ($result['error'] as $field=>$error){
+						$relatedModelField = $relatedModelName .'.'.$field;
+						$errors[$relatedModelField]=$error;
+					}
+				}
 			}
 		}
 		if (count($errors)) return Helper::setValidationErrorResponse($errors);
