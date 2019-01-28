@@ -21,7 +21,7 @@
 		"modified_by" => "integer",
 	];
 	
-	public $relatedModels=["phone", "emails", "address"] 
+	public $relatedModels=["phone"=>"many", "emails"=>"many", "address"=>"one"] 
 	
 Where messages contains an array of custom mesages (if the automatic generated messages are not good enought).
 
