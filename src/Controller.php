@@ -26,9 +26,9 @@ class Controller extends BaseController
 		$validation = \Validator::make($input, $validators["rules"], $validators["messages"]);
 		if (method_exists($model, "conditionalValidations")) $model->conditionalValidations($validation);
 		$errors = $validation->fails() ? $validation->errors()->messages() : [];
-		foreach ($model->relatedModels as $relatedModelName) {
+		foreach ($model->relatedModels as $relatedModelName=>$type) {
 			if (!isset($input[$relatedModelName])) continue;
-			if (isset($input[$relatedModelName][0]))
+			if ($type=='many')
 			foreach ($input[$relatedModelName] as $index => $item) {
 				$result = $this->validate($relatedModelName, $item);
 				if (isset($result["status"])) $errors[$relatedModelName][] = array("index" => $index, "errors" => $result['error']);
